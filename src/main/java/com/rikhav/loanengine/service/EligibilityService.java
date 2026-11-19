@@ -11,7 +11,7 @@ import java.util.Optional;
 @Component
 public class EligibilityService {
 
-    private static final int MINIMUM_CREDIT_SCORE = 600;
+
     private static final int MONTHS_PER_YEAR = 12;
     private static final int MAXIMUM_AGE_PLUS_TENURE_MONTHS = 65 * MONTHS_PER_YEAR;
     private static final BigDecimal EMI_REJECTION_RATIO = new BigDecimal("0.60");
@@ -20,7 +20,7 @@ public class EligibilityService {
     public List<RejectionReason> checkApplicantRules(int creditScore, int age, int tenureMonths) {
         List<RejectionReason> reasons = new ArrayList<>();
 
-        if (creditScore < MINIMUM_CREDIT_SCORE) {
+        if (creditScore < LendingPolicy.MINIMUM_CREDIT_SCORE) {
             reasons.add(RejectionReason.CREDIT_SCORE_BELOW_MINIMUM);
         }
         if (age * MONTHS_PER_YEAR + tenureMonths > MAXIMUM_AGE_PLUS_TENURE_MONTHS) {

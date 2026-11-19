@@ -8,7 +8,7 @@ import java.util.Optional;
 @Component
 public class RiskClassifier {
 
-    private static final int MINIMUM_ELIGIBLE_SCORE = 600;
+
     private static final int MEDIUM_RISK_FLOOR = 650;
     private static final int LOW_RISK_FLOOR = 750;
 
@@ -19,7 +19,7 @@ public class RiskClassifier {
         if (creditScore >= MEDIUM_RISK_FLOOR) {
             return Optional.of(RiskBand.MEDIUM);
         }
-        if (creditScore >= MINIMUM_ELIGIBLE_SCORE) {
+        if (creditScore >= LendingPolicy.MINIMUM_CREDIT_SCORE) {
             return Optional.of(RiskBand.HIGH);
         }
         return Optional.empty();
