@@ -15,8 +15,8 @@ every decision for audit.
 ./mvnw spring-boot:run
 ```
 
-The service starts on http://localhost:8080. Data is stored in a file-backed H2
-database under `./data` (created on first run).
+The service starts on http://localhost:8080. Decisions are stored in a file-backed
+H2 database under `./data`, which is created on first run.
 
 ## Test
 
@@ -24,7 +24,8 @@ database under `./data` (created on first run).
 ./mvnw test
 ```
 
-Stop the application first, because the tests and the app share the same H2 file.
+Tests use a separate in-memory H2 database, so they can run while the application
+is running and never touch the data in `./data`.
 
 ## API
 
@@ -36,7 +37,7 @@ curl -X POST http://localhost:8080/applications \
   -d '{"applicant":{"name":"Rahul","age":30,"monthlyIncome":75000,"employmentType":"SALARIED","creditScore":720},"loan":{"amount":500000,"tenureMonths":36,"purpose":"PERSONAL"}}'
 ```
 
-- `201` with `APPROVED` and one offer, or `REJECTED` with `rejectionReasons`
+- `201` with `APPROVED` and a single offer, or `REJECTED` with `rejectionReasons`
 - `400` with a list of messages for invalid input
 
 Rejection reasons: `CREDIT_SCORE_BELOW_MINIMUM`, `AGE_TENURE_LIMIT_EXCEEDED`,
@@ -44,10 +45,12 @@ Rejection reasons: `CREDIT_SCORE_BELOW_MINIMUM`, `AGE_TENURE_LIMIT_EXCEEDED`,
 
 ## Inspecting stored decisions
 
-With the app running, open http://localhost:8080/h2-console and connect with
-JDBC URL `jdbc:h2:file:./data/loandb`, user `sa`, empty password. Decisions are in
-`LOAN_APPLICATIONS` and reasons in `APPLICATION_REJECTION_REASONS`.
+With the application running, open http://localhost:8080/h2-console and connect with
+JDBC URL `jdbc:h2:file:./data/loandb`, user `sa`, and an empty password. Decisions
+are in `LOAN_APPLICATIONS` and rejection reasons are in
+`APPLICATION_REJECTION_REASONS`.
 
 ## Design notes
 
-See [DEVELOPMENT_NOTES.md](DEVELOPMENT_NOTES.md).
+See [DEVELOPMENT_NOTES.md](DEVELOPMENT_NOTES.md) for the approach, design decisions,
+trade-offs and assumptions.
